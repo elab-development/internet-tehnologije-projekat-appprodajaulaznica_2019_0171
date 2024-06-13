@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('event_id');
+            $table->foreignId('ticket_type_id');
+            $table->string('seat');
+            $table->decimal('price', 8, 2);
             $table->timestamps();
         });
     }

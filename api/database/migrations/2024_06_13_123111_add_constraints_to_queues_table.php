@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('queues', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->boolean('is_processed')->default(false);
-            $table->timestamps();
+        Schema::table('queues', function (Blueprint $table) {
+             
+            $table->unique('user_id'); // Dodato ograničenje da jedan korisnik može biti samo jednom u redu
         });
     }
 
@@ -28,6 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('queues');
+        Schema::table('queues', function (Blueprint $table) {
+          
+        $table->dropUnique(['user_id']);
+        });
     }
 };

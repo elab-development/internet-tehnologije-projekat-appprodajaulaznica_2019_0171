@@ -13,11 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('queues', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->boolean('is_processed')->default(false);
-            $table->timestamps();
+        Schema::table('events', function (Blueprint $table) {
+            $table->dropColumn('capacity');
         });
     }
 
@@ -28,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('queues');
+        Schema::table('events', function (Blueprint $table) {
+            $table->integer('capacity');
+        });
     }
 };
