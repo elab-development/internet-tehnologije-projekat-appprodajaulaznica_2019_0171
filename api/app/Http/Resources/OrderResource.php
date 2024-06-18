@@ -14,8 +14,7 @@ class OrderResource extends JsonResource
             'user' => $this->user,
             'tickets' => $this->tickets->map(function($ticket) {
                 return [
-                    'ticket_id' => $ticket->id,
-                    'flight_number' => $ticket->flight->flight_number,
+                    'ticket_id' => $ticket->id, 
                     'seat' => $ticket->seat,
                     'price' => $ticket->price,
                     'quantity' => $ticket->pivot->quantity,

@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('queues', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('ticket_id')->constrained()->onDelete('cascade');
+            $table->integer('quantity');
             $table->boolean('is_processed')->default(false);
             $table->timestamps();
         });

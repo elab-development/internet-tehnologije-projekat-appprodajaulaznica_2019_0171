@@ -6,6 +6,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\QueueController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,17 +17,27 @@ use App\Http\Controllers\OrderController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::apiResource('tickets', TicketController::class);
-
+ 
 Route::get('events', [EventController::class, 'index']);
 Route::get('events/{id}', [EventController::class, 'show']);
 Route::post('events', [EventController::class, 'store']);
 Route::put('events/{id}', [EventController::class, 'update']);
 Route::delete('events/{id}', [EventController::class, 'destroy']);
+
+
+Route::apiResource('tickets', TicketController::class);
+
+
+Route::apiResource('orders', OrderController::class);
+Route::post('queue/add', [QueueController::class, 'addToQueue']);
+Route::post('queue/process', [QueueController::class, 'processQueue']);
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+
+
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);

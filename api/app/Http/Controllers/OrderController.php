@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Ticket;
+use App\Models\Queue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\OrderResource;
@@ -29,11 +30,27 @@ class OrderController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
+        foreach ($request->tickets as $ticket) {
+            $ticketModel = Ticket::find($ticket['ticket_id']);
+            if ($ticketModel->quantity < $ticket['quantity']) {
+                Queue::create([
+                    'user_id' => $request->user_id,
+                    'ticket_id' => $ticket['ticket_id'],
+                    'quantity' => $ticket['quantity'],
+                    'is_processed' => false
+                ]);
+                return response()->json(['message' => 'Not enough tickets available, added to queue'], 202);
+            }
+        }
+
         $order = Order::create([
             'user_id' => $request->user_id,
         ]);
 
         foreach ($request->tickets as $ticket) {
+            $ticketModel = Ticket::find($ticket['ticket_id']);
+            $ticketModel->quantity -= $ticket['quantity'];
+            $ticketModel->save();
             $order->tickets()->attach($ticket['ticket_id'], ['quantity' => $ticket['quantity']]);
         }
 
@@ -66,6 +83,18 @@ class OrderController extends Controller
 
         $order->tickets()->detach();
         foreach ($request->tickets as $ticket) {
+            $ticketModel = Ticket::find($ticket['ticket_id']);
+            if ($ticketModel->quantity < $ticket['quantity']) {
+                Queue::create([
+                    'user_id' => $request->user_id,
+                    'ticket_id' => $ticket['ticket_id'],
+                    'quantity' => $ticket['quantity'],
+                    'is_processed' => false
+                ]);
+                return response()->json(['message' => 'Not enough tickets available, added to queue'], 202);
+            }
+            $ticketModel->quantity -= $ticket['quantity'];
+            $ticketModel->save();
             $order->tickets()->attach($ticket['ticket_id'], ['quantity' => $ticket['quantity']]);
         }
 
