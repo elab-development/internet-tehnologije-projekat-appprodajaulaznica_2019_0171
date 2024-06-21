@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const colors = {
   primary: '#35524a',
@@ -9,22 +10,20 @@ const colors = {
   highlight: '#32de8a'
 };
 
-const InputField = ({ label, type, name, value, onChange }) => {
-  return (
-    <div style={{ marginBottom: '15px' }}>
-      <label style={{ display: 'block', color: colors.primary }}>{label}</label>
-      <input
-        type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        style={{ width: '100%', padding: '10px', borderRadius: '5px', border: `1px solid ${colors.secondary}` }}
-      />
-    </div>
-  );
-};
+const InputField = ({ label, type, name, value, onChange }) => (
+  <div style={{ marginBottom: '15px' }}>
+    <label style={{ display: 'block', color: colors.primary }}>{label}</label>
+    <input
+      type={type}
+      name={name}
+      value={value}
+      onChange={onChange}
+      style={{ width: '100%', padding: '10px', borderRadius: '5px', border: `1px solid ${colors.secondary}` }}
+    />
+  </div>
+);
 
-const AuthPage = () => {
+const AuthPage = ({ setIsAuthenticated }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     name: '',
@@ -33,6 +32,7 @@ const AuthPage = () => {
     password_confirmation: '',
     phone: ''
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,7 +44,9 @@ const AuthPage = () => {
     try {
       const url = isLogin ? 'http://127.0.0.1:8000/api/login' : 'http://127.0.0.1:8000/api/register';
       const response = await axios.post(url, formData);
-      console.log('Response:', response.data);
+      sessionStorage.setItem('auth_token', response.data.access_token);
+      setIsAuthenticated(true);
+      navigate('/profile');
     } catch (error) {
       console.error('Error:', error.response.data);
     }
