@@ -9,6 +9,21 @@ const colors = {
   highlight: '#32de8a'
 };
 
+const InputField = ({ label, type, name, value, onChange }) => {
+  return (
+    <div style={{ marginBottom: '15px' }}>
+      <label style={{ display: 'block', color: colors.primary }}>{label}</label>
+      <input
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        style={{ width: '100%', padding: '10px', borderRadius: '5px', border: `1px solid ${colors.secondary}` }}
+      />
+    </div>
+  );
+};
+
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
@@ -76,29 +91,14 @@ const AuthPage = () => {
       <form onSubmit={handleSubmit} style={{ maxWidth: '400px', margin: '0 auto', backgroundColor: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 0 10px rgba(0,0,0,0.1)' }}>
         {!isLogin && (
           <>
-            <div style={{ marginBottom: '15px' }}>
-              <label style={{ display: 'block', color: colors.primary }}>Ime i Prezime</label>
-              <input type="text" name="name" value={formData.name} onChange={handleChange} style={{ width: '100%', padding: '10px', borderRadius: '5px', border: `1px solid ${colors.secondary}` }} />
-            </div>
-            <div style={{ marginBottom: '15px' }}>
-              <label style={{ display: 'block', color: colors.primary }}>Telefon</label>
-              <input type="text" name="phone" value={formData.phone} onChange={handleChange} style={{ width: '100%', padding: '10px', borderRadius: '5px', border: `1px solid ${colors.secondary}` }} />
-            </div>
+            <InputField label="Ime i Prezime" type="text" name="name" value={formData.name} onChange={handleChange} />
+            <InputField label="Telefon" type="text" name="phone" value={formData.phone} onChange={handleChange} />
           </>
         )}
-        <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', color: colors.primary }}>Email</label>
-          <input type="email" name="email" value={formData.email} onChange={handleChange} style={{ width: '100%', padding: '10px', borderRadius: '5px', border: `1px solid ${colors.secondary}` }} />
-        </div>
-        <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', color: colors.primary }}>Lozinka</label>
-          <input type="password" name="password" value={formData.password} onChange={handleChange} style={{ width: '100%', padding: '10px', borderRadius: '5px', border: `1px solid ${colors.secondary}` }} />
-        </div>
+        <InputField label="Email" type="email" name="email" value={formData.email} onChange={handleChange} />
+        <InputField label="Lozinka" type="password" name="password" value={formData.password} onChange={handleChange} />
         {!isLogin && (
-          <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'block', color: colors.primary }}>Potvrdi Lozinku</label>
-            <input type="password" name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} style={{ width: '100%', padding: '10px', borderRadius: '5px', border: `1px solid ${colors.secondary}` }} />
-          </div>
+          <InputField label="Potvrdi Lozinku" type="password" name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} />
         )}
         <div style={{ textAlign: 'center' }}>
           <button type="submit" style={{ backgroundColor: colors.highlight, color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
