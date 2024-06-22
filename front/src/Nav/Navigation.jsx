@@ -26,6 +26,7 @@ function Navigation({ isAuthenticated, setIsAuthenticated }) {
       {isAuthenticated ? (
         <>
           <Link to="/profile" style={{ margin: '10px', color: 'white', textDecoration: 'none' }}>Profil</Link>
+          <Link to="/events" style={{ margin: '10px', color: 'white', textDecoration: 'none' }}>Events</Link>
           <button onClick={handleLogout} style={{ margin: '10px', color: 'white', textDecoration: 'none', background: 'none', border: 'none', cursor: 'pointer' }}>Odjavi se</button>
         </>
       ) : (
