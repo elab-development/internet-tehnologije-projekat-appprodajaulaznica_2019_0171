@@ -45,6 +45,8 @@ const AuthPage = ({ setIsAuthenticated }) => {
       const url = isLogin ? 'http://127.0.0.1:8000/api/login' : 'http://127.0.0.1:8000/api/register';
       const response = await axios.post(url, formData);
       sessionStorage.setItem('auth_token', response.data.access_token);
+      sessionStorage.setItem('user_id', response.data.user.id);
+
       setIsAuthenticated(true);
       navigate('/profile');
     } catch (error) {
