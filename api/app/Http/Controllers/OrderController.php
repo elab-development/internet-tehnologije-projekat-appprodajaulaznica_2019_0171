@@ -23,7 +23,10 @@ class OrderController extends Controller
             'user_id' => 'required|integer',
             'tickets' => 'required|array',
             'tickets.*.ticket_id' => 'required|integer|exists:tickets,id',
-            'tickets.*.quantity' => 'required|integer|min:1'
+            'tickets.*.quantity' => 'required|integer|min:1',
+            'tickets.*.seat' => 'required|string|max:255',
+            'tickets.*.price' => 'required|numeric',
+            'tickets.*.ticket_type_id' => 'required|integer'
         ]);
 
         if ($validator->fails()) {
@@ -48,10 +51,16 @@ class OrderController extends Controller
         ]);
 
         foreach ($request->tickets as $ticket) {
-            $ticketModel = Ticket::find($ticket['ticket_id']);
+            $ticketModel = Ticket::create([
+                'event_id' => $ticket['event_id'],
+                'seat' => $ticket['seat'],
+                'price' => $ticket['price'],
+                'ticket_type_id' => $ticket['ticket_type_id'],
+                'quantity' => $ticket['quantity']
+            ]);
             $ticketModel->quantity -= $ticket['quantity'];
             $ticketModel->save();
-            $order->tickets()->attach($ticket['ticket_id'], ['quantity' => $ticket['quantity']]);
+            $order->tickets()->attach($ticketModel->id, ['quantity' => $ticket['quantity']]);
         }
 
         return new OrderResource($order);
@@ -69,7 +78,10 @@ class OrderController extends Controller
             'user_id' => 'required|integer',
             'tickets' => 'required|array',
             'tickets.*.ticket_id' => 'required|integer|exists:tickets,id',
-            'tickets.*.quantity' => 'required|integer|min:1'
+            'tickets.*.quantity' => 'required|integer|min:1',
+            'tickets.*.seat' => 'required|string|max:255',
+            'tickets.*.price' => 'required|numeric',
+            'tickets.*.ticket_type_id' => 'required|integer'
         ]);
 
         if ($validator->fails()) {
@@ -83,19 +95,16 @@ class OrderController extends Controller
 
         $order->tickets()->detach();
         foreach ($request->tickets as $ticket) {
-            $ticketModel = Ticket::find($ticket['ticket_id']);
-            if ($ticketModel->quantity < $ticket['quantity']) {
-                Queue::create([
-                    'user_id' => $request->user_id,
-                    'ticket_id' => $ticket['ticket_id'],
-                    'quantity' => $ticket['quantity'],
-                    'is_processed' => false
-                ]);
-                return response()->json(['message' => 'Not enough tickets available, added to queue'], 202);
-            }
+            $ticketModel = Ticket::create([
+                'event_id' => $ticket['event_id'],
+                'seat' => $ticket['seat'],
+                'price' => $ticket['price'],
+                'ticket_type_id' => $ticket['ticket_type_id'],
+                'quantity' => $ticket['quantity']
+            ]);
             $ticketModel->quantity -= $ticket['quantity'];
             $ticketModel->save();
-            $order->tickets()->attach($ticket['ticket_id'], ['quantity' => $ticket['quantity']]);
+            $order->tickets()->attach($ticketModel->id, ['quantity' => $ticket['quantity']]);
         }
 
         return new OrderResource($order);
@@ -108,3 +117,4 @@ class OrderController extends Controller
         return response()->json(null, 204);
     }
 }
+?>

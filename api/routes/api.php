@@ -7,6 +7,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\QueueController;
+use App\Http\Controllers\TicketTypeController;
+use App\Models\TicketType;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,7 +27,7 @@ Route::post('events', [EventController::class, 'store']);
 Route::put('events/{id}', [EventController::class, 'update']);
 Route::delete('events/{id}', [EventController::class, 'destroy']);
 
-
+Route::get('ticket-types', [TicketTypeController::class, 'index']);
 Route::apiResource('tickets', TicketController::class);
 
 

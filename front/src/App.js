@@ -6,6 +6,7 @@ import HistoricalEvents from './ninjasApi/HistoricalEvents';
 import Navigation from './Nav/Navigation'; 
 import ProfilePage from './Profil/ProfilePage';
 import Events from './Dogadjaji/Events';
+import Orders from './Orders/Orders';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!sessionStorage.getItem('auth_token'));
@@ -20,6 +21,7 @@ function App() {
           <Route path="/historical-events" element={<HistoricalEvents />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/orders" element={<Orders />} />
         
         </Routes>
       </div>
