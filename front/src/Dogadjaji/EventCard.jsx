@@ -85,14 +85,22 @@ const EventCard = ({ event }) => {
       <p>Time: {event.start_time} - {event.end_time}</p>
       {event.images && <img src={event.images} alt={`${event.name}`} style={{ maxWidth: '100%', borderRadius: '10px' }} />}
       <div style={{ marginTop: '10px' }}>
-        <label>
+        <label style={{ display: 'block', marginBottom: '10px' }}>
           Ticket Type:
           <select 
             value={ticketTypeId} 
             onChange={(e) => setTicketTypeId(e.target.value)} 
-            style={{ marginLeft: '10px', width: '100px' }}
+            style={{ 
+              marginLeft: '10px', 
+              width: '100%', 
+              padding: '5px', 
+              borderRadius: '5px', 
+              border: `1px solid ${colors.secondary}`,
+              backgroundColor: colors.secondary,
+              color: 'white'
+            }}
           >
-             
+            <option value="" disabled>Select Type</option>
             {loading && <option>Loading...</option>}
             {error && <option>Error loading types</option>}
             {ticketTypes.map(type => (
@@ -100,29 +108,54 @@ const EventCard = ({ event }) => {
             ))}
           </select>
         </label>
-        <br />
-        <label>
+        <label style={{ display: 'block', marginBottom: '10px' }}>
           Quantity:
           <input 
             type="number" 
             value={quantity} 
             onChange={(e) => setQuantity(e.target.value)} 
-            style={{ marginLeft: '10px', width: '50px' }}
+            style={{ 
+              marginLeft: '10px', 
+              width: '100%', 
+              padding: '5px', 
+              borderRadius: '5px', 
+              border: `1px solid ${colors.secondary}`,
+              backgroundColor: colors.secondary,
+              color: 'white'
+            }}
             min="1"
           />
         </label>
-        <br />
-        <label>
+        <label style={{ display: 'block', marginBottom: '10px' }}>
           Price:
           <input 
             type="number" 
             value={price} 
             readOnly 
-            style={{ marginLeft: '10px', width: '100px' }}
+            style={{ 
+              marginLeft: '10px', 
+              width: '100%', 
+              padding: '5px', 
+              borderRadius: '5px', 
+              border: `1px solid ${colors.secondary}`,
+              backgroundColor: colors.secondary,
+              color: 'white'
+            }}
           />
         </label>
-        <br />
-        <button onClick={handlePurchase} style={{ marginLeft: '10px', padding: '5px 10px', borderRadius: '5px', backgroundColor: colors.highlight, color: 'white', border: 'none' }}>
+        <button 
+          onClick={handlePurchase} 
+          style={{ 
+            marginLeft: '10px', 
+            padding: '10px 20px', 
+            borderRadius: '5px', 
+            backgroundColor: colors.highlight, 
+            color: 'white', 
+            border: 'none', 
+            cursor: 'pointer',
+            marginTop: '10px'
+          }}
+        >
           Buy Ticket
         </button>
       </div>
