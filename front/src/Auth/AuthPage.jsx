@@ -73,6 +73,7 @@ const AuthPage = ({ setIsAuthenticated }) => {
       const response = await axios.post(url, formData);
       sessionStorage.setItem('auth_token', response.data.access_token);
       sessionStorage.setItem('user_id', response.data.user.id);
+      sessionStorage.setItem('role', response.data.user.role);
 
       setIsAuthenticated(true);
       if (response.data.user.role === "admin") {

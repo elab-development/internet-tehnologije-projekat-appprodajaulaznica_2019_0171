@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-function Navigation({ isAuthenticated, setIsAuthenticated }) {
+function Navigation({ isAuthenticated, setIsAuthenticated, userRole }) {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -13,6 +13,7 @@ function Navigation({ isAuthenticated, setIsAuthenticated }) {
       });
       sessionStorage.removeItem('auth_token');
       sessionStorage.removeItem('user_id');
+      sessionStorage.removeItem('role');
       setIsAuthenticated(false);
       navigate('/');
     } catch (error) {
@@ -28,8 +29,14 @@ function Navigation({ isAuthenticated, setIsAuthenticated }) {
         <>
           <Link to="/profile" style={{ margin: '10px', color: 'white', textDecoration: 'none' }}>Profil</Link>
           <Link to="/events" style={{ margin: '10px', color: 'white', textDecoration: 'none' }}>Events</Link>
-          <Link to="/orders" style={{ margin: '10px', color: 'white', textDecoration: 'none' }}>Orders</Link>
           <Link to="/timeline" style={{ margin: '10px', color: 'white', textDecoration: 'none' }}>Timeline</Link>
+
+          {userRole === 'admin' && (
+            <>
+              <Link to="/admin/orders" style={{ margin: '10px', color: 'white', textDecoration: 'none' }}>Orders</Link>
+              <Link to="/admin" style={{ margin: '10px', color: 'white', textDecoration: 'none' }}>Admin</Link>
+            </>
+          )}
 
           <button onClick={handleLogout} style={{ margin: '10px', color: 'white', textDecoration: 'none', background: 'none', border: 'none', cursor: 'pointer' }}>Odjavi se</button>
         </>

@@ -23,7 +23,7 @@ function App() {
           <Route path="/historical-events" element={<HistoricalEvents />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/events" element={<Events />} />
-          <Route path="/orders" element={<Orders />} />
+          <Route path="/admin/orders" element={<Orders />} />
 
 
           <Route path="/admin" element={<AdminEvents />} />
