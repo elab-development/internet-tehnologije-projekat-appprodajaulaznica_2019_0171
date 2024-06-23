@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 const colors = {
@@ -11,7 +11,7 @@ const colors = {
 
 const getCurrentMonth = () => {
   const date = new Date();
-  return date.getMonth() + 1; // JavaScript months are 0-based, so add 1
+  return date.getMonth() + 1;  // JavaScript months are 0-based, so add 1
 };
 
 const HistoricalEvents = () => {
@@ -19,27 +19,34 @@ const HistoricalEvents = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [month, setMonth] = useState(getCurrentMonth());
+  const cache = useRef({});  // Use useRef to create a cache object that persists across renders
 
   const fetchEvents = async (month) => {
-    try {
-      setLoading(true);
-      const response = await axios.get(`https://api.api-ninjas.com/v1/historicalevents?month=${month}`, {
-        headers: { 'X-Api-Key': 'cdBp5C7hVS7gbjOonMGK5KRnvweJwu3ie2B5TQAt' }
-      });
-      setEvents(response.data);
-      setLoading(false);
-    } catch (error) {
-      setError(error);
-      setLoading(false);
+    if (cache.current[month]) {  // Check if the data for the selected month is already in the cache
+      setEvents(cache.current[month]);  // If it is, use the cached data
+      setLoading(false);  // Set loading to false because we have the data
+    } else {
+      try {
+        setLoading(true);  // Set loading to true while fetching data
+        const response = await axios.get(`https://api.api-ninjas.com/v1/historicalevents?month=${month}`, {
+          headers: { 'X-Api-Key': 'cdBp5C7hVS7gbjOonMGK5KRnvweJwu3ie2B5TQAt' }
+        });
+        cache.current[month] = response.data;  // Store the fetched data in the cache
+        setEvents(response.data);  // Update the state with the fetched data
+        setLoading(false);  // Set loading to false because the fetch is complete
+      } catch (error) {
+        setError(error);  // If there's an error, store it in the state
+        setLoading(false);  // Set loading to false because the fetch is complete (even though it failed)
+      }
     }
   };
 
   useEffect(() => {
-    fetchEvents(month);
+    fetchEvents(month);  // Fetch events when the component mounts or when the selected month changes
   }, [month]);
 
   const handleMonthChange = (e) => {
-    setMonth(e.target.value);
+    setMonth(e.target.value);  // Update the selected month when the user changes the selection
   };
 
   if (loading) return <p style={{ color: colors.primary }}>Učitavanje...</p>;
