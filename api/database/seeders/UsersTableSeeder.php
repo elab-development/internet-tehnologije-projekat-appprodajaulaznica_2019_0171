@@ -25,6 +25,7 @@ class UsersTableSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'phone' => '1234567890',
+                'role'=>'admin' 
             ],
             [
                 'name' => 'Jane Smith',
@@ -33,6 +34,7 @@ class UsersTableSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'phone' => '0987654321',
+                'role'=>'user'
             ],
         ]);
     }

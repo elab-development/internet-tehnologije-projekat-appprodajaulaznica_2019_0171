@@ -48,7 +48,13 @@ const AuthPage = ({ setIsAuthenticated }) => {
       sessionStorage.setItem('user_id', response.data.user.id);
 
       setIsAuthenticated(true);
-      navigate('/profile');
+      if(response.data.user.role=="admin"){
+        navigate('/admin');
+
+      }else{
+        navigate('/profile');
+
+      }
     } catch (error) {
       console.error('Error:', error.response.data);
     }

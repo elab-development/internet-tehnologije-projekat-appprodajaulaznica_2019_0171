@@ -7,6 +7,7 @@ import Navigation from './Nav/Navigation';
 import ProfilePage from './Profil/ProfilePage';
 import Events from './Dogadjaji/Events';
 import Orders from './Orders/Orders';
+import AdminEvents from './Admin/AdminEvents';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!sessionStorage.getItem('auth_token'));
@@ -22,6 +23,10 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/events" element={<Events />} />
           <Route path="/orders" element={<Orders />} />
+
+
+          <Route path="/admin" element={<AdminEvents />} />
+
         
         </Routes>
       </div>

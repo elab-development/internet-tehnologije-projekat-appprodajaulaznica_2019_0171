@@ -1,0 +1,75 @@
+ 
+.admin-events-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .admin-events-title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .admin-events-form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  
+  .admin-events-form input,
+  .admin-events-form textarea {
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .admin-events-form .button-primary {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .admin-events-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .admin-events-table th,
+  .admin-events-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .admin-events-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .admin-events-table tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .admin-events-table button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .admin-events-table button:first-child {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .admin-events-table button:last-child {
+    background-color: #dc3545;
+    color: white;
+  }
+  
