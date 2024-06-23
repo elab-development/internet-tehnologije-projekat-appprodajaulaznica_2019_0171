@@ -29,6 +29,7 @@ function Navigation({ isAuthenticated, setIsAuthenticated }) {
           <Link to="/profile" style={{ margin: '10px', color: 'white', textDecoration: 'none' }}>Profil</Link>
           <Link to="/events" style={{ margin: '10px', color: 'white', textDecoration: 'none' }}>Events</Link>
           <Link to="/orders" style={{ margin: '10px', color: 'white', textDecoration: 'none' }}>Orders</Link>
+          <Link to="/timeline" style={{ margin: '10px', color: 'white', textDecoration: 'none' }}>Timeline</Link>
 
           <button onClick={handleLogout} style={{ margin: '10px', color: 'white', textDecoration: 'none', background: 'none', border: 'none', cursor: 'pointer' }}>Odjavi se</button>
         </>

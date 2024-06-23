@@ -8,6 +8,7 @@ import ProfilePage from './Profil/ProfilePage';
 import Events from './Dogadjaji/Events';
 import Orders from './Orders/Orders';
 import AdminEvents from './Admin/AdminEvents';
+import Timeline from './Dogadjaji/Timeline';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!sessionStorage.getItem('auth_token'));
@@ -26,6 +27,7 @@ function App() {
 
 
           <Route path="/admin" element={<AdminEvents />} />
+          <Route path="/timeline" element={<Timeline />} />
 
         
         </Routes>

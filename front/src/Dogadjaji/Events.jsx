@@ -1,6 +1,7 @@
 import React, { useState } from 'react'; 
 import EventCard from './EventCard';
 import useFetchEvents from '../kuke/useFetchEvents';
+import Timeline from './Timeline';
 
 const colors = {
   primary: '#35524a',
@@ -37,6 +38,7 @@ const Events = () => {
           border: `1px solid ${colors.primary}`
         }}
       />
+       
       <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap' }}>
         {filteredEvents.map(event => (
           <EventCard key={event.id} event={event} />

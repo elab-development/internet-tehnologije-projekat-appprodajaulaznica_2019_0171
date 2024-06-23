@@ -1,0 +1,28 @@
+ 
+.timeline-container {
+    padding: 20px;
+    background-color: #f4f4f4;
+    min-height: 100vh;
+  }
+  
+  .timeline-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #35524a;
+  }
+  
+  .vertical-timeline-element-title {
+    font-size: 1.5em;
+    color: #627c85;
+  }
+  
+  .vertical-timeline-element-subtitle {
+    font-size: 1.2em;
+    color: #779cab;
+  }
+  
+  img {
+    margin-top: 10px;
+    border-radius: 10px;
+  }
+  
