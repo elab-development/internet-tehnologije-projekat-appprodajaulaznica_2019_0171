@@ -18,7 +18,7 @@ function App() {
         <Navigation isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/auth" element={<AuthPage setIsAuthenticated={setIsAuthenticated} />} />
+          <Route path="/auth" element={<AuthPage setIsAuthenticated={setIsAuthenticated} />} />  {/* dopunjeno sa password generatorom */}
           <Route path="/historical-events" element={<HistoricalEvents />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/events" element={<Events />} />

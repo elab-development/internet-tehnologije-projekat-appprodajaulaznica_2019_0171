@@ -10,11 +10,12 @@ const AdminEvents = () => {
     name: 'Test Event',
     description: 'This is a description for the test event.',
     location: 'Test Location',
-    images: '["image1.jpg", "image2.jpg"]',
+    images: '',
     event_date: '2023-12-31',
     start_time: '18:00',
     end_time: '20:00'
   });
+  const [imageLinks, setImageLinks] = useState(['']);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -34,19 +35,38 @@ const AdminEvents = () => {
     });
   };
 
+  const handleImageLinkChange = (index, value) => {
+    const newImageLinks = [...imageLinks];
+    newImageLinks[index] = value;
+    setImageLinks(newImageLinks);
+  };
+
+  const handleAddImageLink = () => {
+    setImageLinks([...imageLinks, '']);
+  };
+
+  const handleRemoveImageLink = (index) => {
+    const newImageLinks = imageLinks.filter((_, i) => i !== index);
+    setImageLinks(newImageLinks);
+  };
+
   const handleAddOrUpdateEvent = async (e) => {
     e.preventDefault();
     const token = sessionStorage.getItem('auth_token');
+    const eventData = {
+      ...newEvent,
+      images: JSON.stringify(imageLinks)
+    };
     try {
       if (editingEvent) {
-        const response = await axios.put(`http://127.0.0.1:8000/api/events/${editingEvent.id}`, newEvent, {
+        const response = await axios.put(`http://127.0.0.1:8000/api/events/${editingEvent.id}`, eventData, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setEvents((prevEvents) =>
           prevEvents.map((event) => (event.id === editingEvent.id ? response.data.data : event))
         );
       } else {
-        const response = await axios.post('http://127.0.0.1:8000/api/events', newEvent, {
+        const response = await axios.post('http://127.0.0.1:8000/api/events', eventData, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setEvents((prevEvents) => [...prevEvents, response.data.data]);
@@ -61,6 +81,7 @@ const AdminEvents = () => {
         start_time: '',
         end_time: ''
       });
+      setImageLinks(['']);
     } catch (error) {
       console.error('Error saving event:', error);
     }
@@ -74,6 +95,7 @@ const AdminEvents = () => {
       start_time: formatTime(event.start_time),
       end_time: formatTime(event.end_time)
     });
+    setImageLinks(JSON.parse(event.images));
   };
 
   const handleDeleteEvent = async (id) => {
@@ -118,14 +140,19 @@ const AdminEvents = () => {
           placeholder="Location"
           required
         />
-        <input
-          type="text"
-          name="images"
-          value={newEvent.images}
-          onChange={handleInputChange}
-          placeholder="Images (JSON)"
-          required
-        />
+        {imageLinks.map((link, index) => (
+          <div key={index} className="image-link-input">
+            <input
+              type="text"
+              value={link}
+              onChange={(e) => handleImageLinkChange(index, e.target.value)}
+              placeholder="Image Link"
+              required
+            />
+            <button type="button" onClick={() => handleRemoveImageLink(index)}>-</button>
+          </div>
+        ))}
+        <button type="button" onClick={handleAddImageLink}>+</button>
         <input
           type="date"
           name="event_date"

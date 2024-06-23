@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,11 +32,38 @@ const AuthPage = ({ setIsAuthenticated }) => {
     password_confirmation: '',
     phone: ''
   });
+  const [suggestedPassword, setSuggestedPassword] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLogin) {
+      const fetchSuggestedPassword = async () => {
+        try {
+          const response = await axios.get('https://api.api-ninjas.com/v1/passwordgenerator', {
+            params: { length: 16 },
+            headers: { 'X-Api-Key': 'cdBp5C7hVS7gbjOonMGK5KRnvweJwu3ie2B5TQAt' }
+          });
+          setSuggestedPassword(response.data.random_password);
+        } catch (error) {
+          console.error('Error fetching suggested password:', error);
+        }
+      };
+
+      fetchSuggestedPassword();
+    }
+  }, [isLogin]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleCopyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Predložena lozinka je kopirana u privremenu memoriju');
+    }).catch(err => {
+      console.error('Could not copy text: ', err);
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -48,12 +75,10 @@ const AuthPage = ({ setIsAuthenticated }) => {
       sessionStorage.setItem('user_id', response.data.user.id);
 
       setIsAuthenticated(true);
-      if(response.data.user.role=="admin"){
+      if (response.data.user.role === "admin") {
         navigate('/admin');
-
-      }else{
+      } else {
         navigate('/profile');
-
       }
     } catch (error) {
       console.error('Error:', error.response.data);
@@ -108,7 +133,15 @@ const AuthPage = ({ setIsAuthenticated }) => {
         <InputField label="Email" type="email" name="email" value={formData.email} onChange={handleChange} />
         <InputField label="Lozinka" type="password" name="password" value={formData.password} onChange={handleChange} />
         {!isLogin && (
-          <InputField label="Potvrdi Lozinku" type="password" name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} />
+          <>
+            <InputField label="Potvrdi Lozinku" type="password" name="password_confirmation" value={formData.password_confirmation} onChange={handleChange} />
+            <div style={{ marginBottom: '15px', color: colors.secondary }}>
+              <strong>Predložena Lozinka: </strong>
+              <span style={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={() => handleCopyToClipboard(suggestedPassword)}>
+                {suggestedPassword}
+              </span>
+            </div>
+          </>
         )}
         <div style={{ textAlign: 'center' }}>
           <button type="submit" style={{ backgroundColor: colors.highlight, color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
